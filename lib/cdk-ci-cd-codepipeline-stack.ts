@@ -1,18 +1,24 @@
 import * as cdk from 'aws-cdk-lib';
-import * as s3 from 'aws-cdk-lib/aws-s3';
+import {
+  CodePipeline,
+  CodePipelineSource,
+  ShellStep,
+} from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
-
-const bucketName = 'emi-cdk-ci-cd-codepipeline-bucket';
 
 export class CdkCiCdCodepipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    //create a new S3
-    new s3.Bucket(this, bucketName, {
-      versioned: true,
-      bucketName,
+    new CodePipeline(this, 'cdk-emi-pipeline', {
+      pipelineName: 'cdk-emi-pipeline',
+      synth: new ShellStep('Synth', {
+        input: CodePipelineSource.gitHub(
+          'EmiRoberti77/cdk-ci-cd-codepipeline',
+          'main'
+        ),
+        commands: ['npm ci', 'npx cdk synth'],
+      }),
     });
   }
 }
