@@ -29,11 +29,10 @@ export class CdkCiCdCodepipelineStack extends cdk.Stack {
       })
     );
 
-   testStage.addPre(new CodeBuildStep('unit-test', {
-    commands:[
-      "npm ci",
-      "npm run test"
-    ]
-   })
+    testStage.addPre(
+      new CodeBuildStep('unit-test', {
+        commands: ['npm ci', 'npm run test'],
+      })
+    );
   }
 }
