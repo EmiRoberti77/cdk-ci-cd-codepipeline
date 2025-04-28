@@ -5,12 +5,13 @@ import {
   ShellStep,
 } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
+import { PipelineStage } from './pipelineStage';
 
 export class CdkCiCdCodepipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    new CodePipeline(this, 'cdk-emi-pipeline', {
+    const pipeline = new CodePipeline(this, 'cdk-emi-pipeline', {
       pipelineName: 'cdk-emi-pipeline',
       synth: new ShellStep('Synth', {
         input: CodePipelineSource.gitHub(
@@ -20,5 +21,11 @@ export class CdkCiCdCodepipelineStack extends cdk.Stack {
         commands: ['npm ci', 'npx cdk synth'],
       }),
     });
+
+    const testStage = pipeline.addStage(
+      new PipelineStage(this, 'EmiCdkPipelineTest', {
+        stageName: 'test',
+      })
+    );
   }
 }
