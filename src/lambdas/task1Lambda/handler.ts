@@ -1,9 +1,12 @@
-import { APIGatewayProxyEvent, APIGatewayProxyResultV2 } from 'aws-lambda';
+import {
+  APIGatewayProxyEvent,
+  APIGatewayProxyStructuredResultV2,
+} from 'aws-lambda';
 
 export const handler = async (
   event: APIGatewayProxyEvent,
   context: any
-): Promise<APIGatewayProxyResultV2> => {
+): Promise<APIGatewayProxyStructuredResultV2> => {
   const message = 'lambda run successfully';
   console.log(message);
   return {
