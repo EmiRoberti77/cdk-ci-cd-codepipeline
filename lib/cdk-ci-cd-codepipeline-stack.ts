@@ -26,17 +26,6 @@ export class CdkCiCdCodepipelineStack extends cdk.Stack {
       'emiUnitTestPipeline',
       'devSynthShell'
     );
-    // 2️⃣ UAT Pipeline
-    const uatPipeline = new CodePipeline(this, 'UatPipeline', {
-      pipelineName: 'cdk-emi-uat-pipeline',
-      synth: new ShellStep('Synth-Uat', {
-        input: CodePipelineSource.gitHub(
-          'EmiRoberti77/cdk-ci-cd-codepipeline',
-          'uat' // UAT branch
-        ),
-        commands: ['npm ci', 'npx cdk synth'],
-      }),
-    });
   }
 
   buildPipeLine(
