@@ -19,6 +19,9 @@ export class ApiStack extends Stack {
     const task1LambdaIntegration = new LambdaIntegration(props.task1Lambda);
     const api = new RestApi(this, apiGatewayName, {
       restApiName: apiGatewayName,
+      deployOptions: {
+        stageName: props.stageName,
+      },
     });
     const apiResource = api.root.addResource(rootPath);
     apiResource.addMethod(GET, task1LambdaIntegration);
