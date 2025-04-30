@@ -9,22 +9,46 @@ import { Construct } from 'constructs';
 import { PipelineStage } from './pipelineStage';
 
 const githubPath = 'EmiRoberti77/cdk-ci-cd-codepipeline';
+const enum STAGE {
+  DEV = 'dev',
+  UAT = 'uat',
+  PROD = 'prod',
+}
+
+const enum BRANCH {
+  DEV = 'dev',
+  UAT = 'uat',
+  MAIN = 'main',
+}
 
 export class CdkCiCdCodepipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // 1️⃣ DEV Pipeline
+    // DEV Pipeline
     this.buildPipeLine(
-      'dev',
+      STAGE.DEV,
       githubPath,
-      'dev',
+      BRANCH.DEV,
       ['npm ci', 'npx cdk synth'],
       'devEmiCdkPipeline',
       ['npm ci', 'npm run test'],
-      'emiStageCdkPipeline',
-      'emiUnitTestPipeline',
+      'devStageCdkPipeline',
+      'devUnitTestPipeline',
       'devSynthShell'
+    );
+
+    // PROD Pipeline
+    this.buildPipeLine(
+      STAGE.PROD,
+      githubPath,
+      BRANCH.MAIN,
+      ['npm ci', 'npx cdk synth'],
+      'prodEmiCdkPipeline',
+      ['npm ci', 'npm run test'],
+      'prodStageCdkPipeline',
+      'prodUnitTestPipeline',
+      'prodSynthShell'
     );
   }
 

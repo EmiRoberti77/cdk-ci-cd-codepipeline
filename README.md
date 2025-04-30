@@ -189,6 +189,15 @@ To extend the project to UAT and PROD pipelines:
 
 1. Create more branches (`uat`, `prod`) in GitHub.
 2. Call `buildPipeLine()` multiple times for different stages.
+3. When a new enviroment has been created you have to run
+
+```bash
+cdk synth
+cdk deploy
+```
+
+this is because the new code pipeline has to be build by CDK, Once its been deployed then it can be triggered by pushing code to the
+target branch `main`, `uat`, `dev` in your github repo
 
 Example:
 
